@@ -29,7 +29,9 @@ public class AnimalServiceImpl implements AnimalService {
             List<Animal> animals = this.findAllAnimals();
             animal = repository.save(animal);
             for (Animal oldAnimal : animals) {
-                pairService.savePair(animal, oldAnimal);
+                if (animal.getPredator() == oldAnimal.getPredator()) {
+                    pairService.savePair(animal, oldAnimal);
+                }
             }
             return animal;
 //        } catch (Exception e) {

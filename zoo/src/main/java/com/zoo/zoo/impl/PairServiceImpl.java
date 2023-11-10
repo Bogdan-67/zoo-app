@@ -7,10 +7,12 @@ import com.zoo.zoo.repository.PairRepository;
 import com.zoo.zoo.service.PairService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,13 +37,13 @@ public class PairServiceImpl implements PairService {
             return reversePair.get();
         }
 
-        // Если пара не найдена, создать новую пару
-        Animal foundFirstAnimal = animalRepository.findById(firstAnimal.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Животное с id " + firstAnimal.getId() + " не найдено."));
-        Animal foundSecondAnimal = animalRepository.findById(secondAnimal.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Животное с id " + secondAnimal.getId() + " не найдено."));
+        return null;
+    }
 
-        return savePair(foundFirstAnimal, foundSecondAnimal);
+    @Override
+    public List<Pair> findAllPairs() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "count");
+        return pairRepository.findAll(sort);
     }
 
     @Override
@@ -66,11 +68,7 @@ public class PairServiceImpl implements PairService {
             pairRepository.save(existingPair);
         });
         pairDb.orElseGet(() -> {
-            // Пары не существует - создать новую
-            Pair newPair = savePair(pair.getFirst(), pair.getSecond());
-            // Сразу увеличить счетчик
-            newPair.setCount(newPair.getCount() + 1);
-            pairRepository.save(newPair);
+            System.out.println("Пара не найдена: " + pair);
             return null;
         });
     }
