@@ -69,7 +69,7 @@ public class AllocationServiceImpl implements AllocationService {
                     }
                 }
                 // Сравниваем счетчик данной пары с первой в массиве
-                else if (pair.get(3).equals(maxCount.get(0).get(3))) {
+                else if (pair.get(3).equals(maxCount.get(0).get(3)) && first.getPredator().equals(second.getPredator())) {
                     // Если первое или второе животное не равно ищущему и находится в списке ожидания
                     if (!first.equals(animal) && waitList.inList(first) || !second.equals(animal) && waitList.inList(second)) {
                         maxCount.add(pair);
