@@ -1,0 +1,22 @@
+.tile {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  border: 1px solid #dbdbdb;
+  border-radius: 10px;
+  padding: 10px;
+
+  &__title {
+    margin: 0;
+  }
+
+  &__delete {
+    color: red;
+  }
+
+  &:hover {
+    background: #dbdbdb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+}
