@@ -22,6 +22,23 @@ export const generateAllocation = createAsyncThunk<
   }
 });
 
+// Сохранение распределения
+export const saveAllocation = createAsyncThunk<
+  AxiosResponse<string>,
+  void,
+  { rejectValue: string; state: RootState }
+>('allocation/saveAllocation', async (params, { rejectWithValue, getState }) => {
+  try {
+    const state = getState() as RootState;
+    const areas = state.allocation.areas.filter((item) => item.first && item.second);
+    console.log(areas);
+    const response = await AllocationSertvice.saveAllocation(areas);
+    return response;
+  } catch (error) {
+    return rejectWithValue('Не удалось сохранить распределение');
+  }
+});
+
 interface AllocationState {
   areas: IArea[];
   status: Status;
@@ -98,6 +115,19 @@ const allocationSlice = createSlice({
     builder.addCase(generateAllocation.rejected, (state, action) => {
       state.status = Status.ERROR;
       message.error(action.payload || 'Не удалось сгенерировать распределение');
+    });
+    // Сохранение распределения
+    builder.addCase(saveAllocation.pending, (state, action) => {
+      state.status = Status.LOADING;
+    });
+    builder.addCase(saveAllocation.fulfilled, (state, action) => {
+      state.status = Status.SUCCESS;
+      message.success(action.payload.data);
+      state.areas = initialState.areas;
+    });
+    builder.addCase(saveAllocation.rejected, (state, action) => {
+      state.status = Status.ERROR;
+      message.error(action.payload || 'Не удалось сохранить распределение');
     });
   },
 });
