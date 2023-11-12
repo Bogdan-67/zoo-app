@@ -2,10 +2,10 @@ import React from 'react';
 import './App.css';
 import AreasInput from './components/AreasInput';
 import AnimalsList from './components/AnimalsList';
-import { Button, Col, Flex, Row } from 'antd';
+import { Col, Row } from 'antd';
 import './styles/app.scss';
 import AreasList from './components/Areas/AreasList';
-import GenerateButton from './components/GenerateButton';
+import Menu from './components/Menu';
 
 function App() {
   return (
@@ -17,11 +17,7 @@ function App() {
         </Col>
         <Col span={8}>
           <AnimalsList />
-          <Flex vertical gap={10} className='mt20'>
-            <Button>Добавить животное</Button>
-            <GenerateButton />
-            <Button type='primary'>Сохранить</Button>
-          </Flex>
+          <Menu />
         </Col>
       </Row>
     </div>
