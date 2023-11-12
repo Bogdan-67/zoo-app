@@ -26,6 +26,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public Animal saveAnimal(Animal animal) {
 //        try {
+        // TODO: Проверка на существование животного
             List<Animal> animals = this.findAllAnimals();
             animal = repository.save(animal);
             for (Animal oldAnimal : animals) {
