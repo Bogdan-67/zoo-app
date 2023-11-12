@@ -5,6 +5,8 @@ import { Status } from '../../models/Status.enum';
 import LoadingSpinner from '../LoadingSpinner';
 import { Empty } from 'antd';
 import AnimalTile from '../AnimalTile';
+import styles from './AnimalsList.module.scss';
+import classNames from 'classnames';
 
 type Props = {};
 
@@ -17,7 +19,7 @@ const AnimalsList = (props: Props) => {
   }, []);
 
   return (
-    <div className='container'>
+    <div className={classNames('container', styles.wrapper)}>
       {status === Status.LOADING ? (
         <LoadingSpinner />
       ) : status === Status.ERROR ? (
