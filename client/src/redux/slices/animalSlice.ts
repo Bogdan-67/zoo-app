@@ -42,7 +42,7 @@ const animalSlice = createSlice({
     });
     builder.addCase(fetchAnimals.fulfilled, (state, action) => {
       state.status = Status.SUCCESS;
-      state.list = action.payload.data;
+      state.list = action.payload.data.map((item) => ({ ...item, type: 'animal' }));
     });
     builder.addCase(fetchAnimals.rejected, (state, action) => {
       state.status = Status.ERROR;

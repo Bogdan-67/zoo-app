@@ -61,6 +61,22 @@ const allocationSlice = createSlice({
       }
     },
 
+    addAnimalInArea(state, action: PayloadAction<{ animal: IAnimal; id: number }>) {
+      const animal = action.payload.animal;
+      let area = state.areas.find((item) => item.id === action.payload.id);
+      const notAnimalInAllocation = !state.areas.find(
+        (item) => item.first?.id === animal.id || item.second?.id === animal.id,
+      );
+      if (area !== undefined && !(area.first && area.second) && notAnimalInAllocation) {
+        if (area.first === null) {
+          area.first = animal;
+        } else if (area.second === null) {
+          area.second = animal;
+        }
+        state.areas = state.areas.map((item) => (item.id === area!.id ? area! : item));
+      }
+    },
+
     removeAnimalFromArea(state, action: PayloadAction<{ animal: 'first' | 'second'; id: number }>) {
       let area = state.areas.find((item) => item.id === action.payload.id);
       if (area !== undefined) {
@@ -89,6 +105,6 @@ const allocationSlice = createSlice({
 export const SelectAreas = (state: RootState) => state.allocation.areas;
 export const SelectAreasNumber = (state: RootState) => state.allocation.areas.length;
 export const SelectAllocationStatus = (state: RootState) => state.allocation.status;
-export const { setAreas, removeAnimalFromArea } = allocationSlice.actions;
+export const { setAreas, addAnimalInArea, removeAnimalFromArea } = allocationSlice.actions;
 
 export default allocationSlice.reducer;
