@@ -63,9 +63,10 @@ public class AllocationServiceImpl implements AllocationService {
                 // Если maxCount пуст до добавляем первый элемент
                 Animal first = (Animal) pair.get(1);
                 Animal second = (Animal) pair.get(2);
+                // TODO: Сделать доп проверку на совместимость по хищнику
                 if (maxCount.isEmpty()) {
                     if (!first.equals(animal) && waitList.inList(first) || !second.equals(animal) && waitList.inList(second)) {
-                        maxCount.add(countPairs.get(0));
+                        maxCount.add(pair);
                     }
                 }
                 // Сравниваем счетчик данной пары с первой в массиве
