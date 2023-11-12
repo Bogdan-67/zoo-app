@@ -2,6 +2,7 @@
   display: flex;
   gap: 10px;
   justify-content: space-between;
+  align-items: center;
   border: 1px solid #dbdbdb;
   border-radius: 10px;
   padding: 10px;
@@ -19,4 +20,12 @@
     cursor: pointer;
     transition: all 0.2s ease;
   }
+}
+
+.indicator {
+  color: rgb(91, 246, 19);
+}
+
+.predator {
+  color: red;
 }
