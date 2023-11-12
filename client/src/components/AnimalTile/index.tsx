@@ -6,7 +6,7 @@ import { Tooltip } from 'antd';
 import { FaCircle } from 'react-icons/fa';
 import classNames from 'classnames';
 import { useAppDispatch } from '../../hooks/redux';
-import { setDragItem } from '../../redux/slices/dragSlice';
+import { clearDragItem, setDragItem } from '../../redux/slices/dragSlice';
 
 type Props = {
   animal: IAnimal;
@@ -21,8 +21,12 @@ const AnimalTile = ({ animal, tip = '', deleteFunc }: Props) => {
     dispatch(setDragItem(animal));
   };
 
+  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    dispatch(clearDragItem());
+  };
+
   return (
-    <div draggable={true} onDragStart={dragStartHandler}>
+    <div draggable={true} onDragStart={dragStartHandler} onDragEnd={dragEndHandler}>
       <Tooltip title={tip} placement='left'>
         <div className={styles.tile}>
           <Tooltip title={animal.predator ? 'Хищник' : 'Не хищник'}>

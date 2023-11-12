@@ -3,7 +3,7 @@ import { IArea } from '../../models/IArea';
 import AnimalTile from '../AnimalTile';
 import classNames from 'classnames';
 import styles from './Area.module.scss';
-import { Card, Flex } from 'antd';
+import { Card, Flex, Skeleton } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addAnimalInArea, removeAnimalFromArea } from '../../redux/slices/allocationSlice';
 import { SelectDragItem, clearDragItem } from '../../redux/slices/dragSlice';
@@ -20,8 +20,11 @@ const Area: FC<Props> = ({ area, nomer }) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
+    const target = e.relatedTarget as HTMLElement;
+    if (!target || !e.currentTarget.contains(target)) {
+      console.log('dragend');
+      setIsDragging(false);
+    }
   };
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -31,15 +34,10 @@ const Area: FC<Props> = ({ area, nomer }) => {
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    console.log('dropped', dragItem);
+    setIsDragging(false);
     dispatch(clearDragItem());
-    console.log(
-      'canDrop',
-      (area.first === null && area.second === null) ||
-        (area.first || area.second)?.predator === dragItem.predator,
-    );
     if (
-      dragItem.type === 'animal' &&
+      dragItem?.type === 'animal' &&
       !(area.first && area.second) &&
       ((area.first === null && area.second === null) ||
         (area.first || area.second)?.predator === dragItem.predator)
@@ -49,23 +47,27 @@ const Area: FC<Props> = ({ area, nomer }) => {
   };
 
   return (
-    <div onDragOver={dragOverHandler} onDrop={dropHandler} onDragEnd={dragEndHandler}>
+    <div onDragOver={dragOverHandler} onDrop={dropHandler} onDragLeave={(e) => dragEndHandler(e)}>
       <Card
         size='small'
         title={`Вольер${nomer ? ` №${nomer}` : ''}`}
         className={classNames('container', styles.area)}>
         <Flex vertical gap={10}>
-          {area.first && (
+          {area.first ? (
             <AnimalTile
               animal={area.first}
               deleteFunc={() => dispatch(removeAnimalFromArea({ animal: 'first', id: area.id }))}
             />
+          ) : (
+            isDragging && <Skeleton.Input size={'default'} />
           )}
-          {area.second && (
+          {area.second ? (
             <AnimalTile
               animal={area.second}
               deleteFunc={() => dispatch(removeAnimalFromArea({ animal: 'second', id: area.id }))}
             />
+          ) : (
+            isDragging && area.first && <Skeleton.Input size={'default'} />
           )}
         </Flex>
       </Card>
