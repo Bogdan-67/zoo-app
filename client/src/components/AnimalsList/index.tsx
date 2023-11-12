@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Status } from '../../models/Status.enum';
 import LoadingSpinner from '../LoadingSpinner';
 import { Empty } from 'antd';
-import styles from './AnimalsList.module.scss';
 import AnimalTile from '../AnimalTile';
 
 type Props = {};
@@ -18,7 +17,7 @@ const AnimalsList = (props: Props) => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className='container'>
       {status === Status.LOADING ? (
         <LoadingSpinner />
       ) : status === Status.ERROR ? (
@@ -26,7 +25,12 @@ const AnimalsList = (props: Props) => {
       ) : (
         <>
           {animals.map((animal) => (
-            <AnimalTile key={animal.id} animal={animal} deleteFunc={() => {}} />
+            <AnimalTile
+              key={animal.id}
+              animal={animal}
+              tip='Добавить в вольер'
+              deleteFunc={() => {}}
+            />
           ))}
         </>
       )}

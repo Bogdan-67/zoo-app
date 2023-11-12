@@ -4,8 +4,8 @@ import { IPair } from './IPair';
 
 export interface IArea {
   id: number;
-  first?: IAnimal;
-  second?: IAnimal;
-  pair?: IPair;
+  first?: IAnimal | null;
+  second?: IAnimal | null;
+  pair?: IPair | null;
   allocation?: IAllocation;
 }

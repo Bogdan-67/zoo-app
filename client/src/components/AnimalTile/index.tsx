@@ -6,12 +6,13 @@ import { Tooltip } from 'antd';
 
 type Props = {
   animal: IAnimal;
+  tip?: string;
   deleteFunc?: () => void;
 };
 
-const AnimalTile = ({ animal, deleteFunc }: Props) => {
+const AnimalTile = ({ animal, tip = '', deleteFunc }: Props) => {
   return (
-    <Tooltip title='Перетащите в вольер' placement='left'>
+    <Tooltip title={tip} placement='left'>
       <div className={styles.tile}>
         <p className={styles.tile__title}>{animal.name}</p>
         <Tooltip title={'Удалить животное'} placement='bottom'>
