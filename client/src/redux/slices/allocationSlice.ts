@@ -6,6 +6,7 @@ import { IArea } from '../../models/IArea';
 import { Status } from '../../models/Status.enum';
 import { message } from 'antd';
 import { RootState } from '../store';
+import { IAnimal } from '../../models/IAnimal';
 
 // Генерация распределения
 export const generateAllocation = createAsyncThunk<
@@ -22,7 +23,7 @@ export const generateAllocation = createAsyncThunk<
 });
 
 interface AllocationState {
-  areas: Partial<IArea>[];
+  areas: IArea[];
   status: Status;
   error: string | null;
 }
@@ -59,6 +60,14 @@ const allocationSlice = createSlice({
         }
       }
     },
+
+    removeAnimalFromArea(state, action: PayloadAction<{ animal: 'first' | 'second'; id: number }>) {
+      let area = state.areas.find((item) => item.id === action.payload.id);
+      if (area !== undefined) {
+        area[action.payload.animal] = null;
+        state.areas = state.areas.map((item) => (item.id === area!.id ? area! : item));
+      }
+    },
   },
   extraReducers: (builder) => {
     // Генерация распределения
@@ -80,6 +89,6 @@ const allocationSlice = createSlice({
 export const SelectAreas = (state: RootState) => state.allocation.areas;
 export const SelectAreasNumber = (state: RootState) => state.allocation.areas.length;
 export const SelectAllocationStatus = (state: RootState) => state.allocation.status;
-export const { setAreas } = allocationSlice.actions;
+export const { setAreas, removeAnimalFromArea } = allocationSlice.actions;
 
 export default allocationSlice.reducer;
