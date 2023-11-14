@@ -25,8 +25,8 @@ public class AnimalController {
     }
 
     @DeleteMapping
-    public void deleteAnimal(@RequestBody Long id) {
-        animalService.deleteAnimal(id);
+    public void deleteAnimal(@RequestBody Animal animal) {
+        animalService.deleteAnimal(animal);
     }
 
 }

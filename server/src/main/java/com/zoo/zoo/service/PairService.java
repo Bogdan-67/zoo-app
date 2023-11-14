@@ -11,4 +11,6 @@ public interface PairService {
     List<Pair> findAllPairs();
 
     Pair savePair(Animal first, Animal second);
+
+    void deletePairsByAnimal(Animal animal);
 }

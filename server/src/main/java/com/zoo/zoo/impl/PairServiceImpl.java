@@ -53,4 +53,9 @@ public class PairServiceImpl implements PairService {
 
         return newPair;
     }
+
+    @Override
+    public void deletePairsByAnimal(Animal animal) {
+        pairRepository.deleteByFirstOrSecond(animal, animal);
+    }
 }

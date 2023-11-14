@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface PairRepository extends JpaRepository<Pair, Long> {
     Optional<Pair> findByFirstAndSecond(Animal first, Animal second);
+
+    void deleteByFirstOrSecond(Animal first, Animal second);
 }

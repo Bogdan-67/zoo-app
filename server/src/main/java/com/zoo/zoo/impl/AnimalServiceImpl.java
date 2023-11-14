@@ -42,8 +42,9 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void deleteAnimal(Long id) {
-        repository.deleteById(id);
-        // todo: Удалять все пары, связанные с этим животным
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void deleteAnimal(Animal animal) {
+        pairService.deletePairsByAnimal(animal);
+        repository.delete(animal);
     }
 }

@@ -10,4 +10,8 @@ export default class AnimalService {
   static async getAnimals(): Promise<AxiosResponse<IAnimal[]>> {
     return $api.get<IAnimal[]>('/animals');
   }
+
+  static async deleteAnimal(body: IAnimal): Promise<void> {
+    $api.delete<IAnimal>('/animals', { data: body });
+  }
 }

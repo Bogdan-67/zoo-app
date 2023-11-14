@@ -9,5 +9,5 @@ public interface AnimalService {
 
     Animal saveAnimal(Animal animal);
 
-    void deleteAnimal(Long id);
+    void deleteAnimal(Animal animal);
 }

@@ -4,6 +4,8 @@ import { RootState } from '../store';
 import { Status } from '../../models/Status.enum';
 import { AxiosResponse } from 'axios';
 import AnimalService from '../../services/AnimalService';
+import { message } from 'antd';
+import { removeAnimalFromArea } from './allocationSlice';
 
 export const fetchAnimals = createAsyncThunk<
   AxiosResponse<IAnimal[]>,
@@ -28,6 +30,26 @@ export const createAnimal = createAsyncThunk<
     return response;
   } catch (error) {
     return rejectWithValue('Не получилось добавить животное');
+  }
+});
+
+export const deleteAnimal = createAsyncThunk<
+  IAnimal,
+  IAnimal,
+  { rejectValue: string; state: RootState }
+>('animals/deleteAnimal', async (params, { rejectWithValue, getState, dispatch }) => {
+  try {
+    const state = getState() as RootState;
+    await AnimalService.deleteAnimal(params);
+    const indexOfArea = state.allocation.areas.findIndex(
+      (area) => area.first?.id === params.id || area.second?.id === params.id,
+    );
+    const area = state.allocation.areas[indexOfArea];
+    const pos = area.first?.id === params.id ? 'first' : 'second';
+    dispatch(removeAnimalFromArea({ animal: pos, id: indexOfArea }));
+    return params;
+  } catch (error) {
+    return rejectWithValue('Не получилось удалить животное');
   }
 });
 
@@ -72,6 +94,20 @@ const animalSlice = createSlice({
     builder.addCase(createAnimal.rejected, (state, action) => {
       state.status = Status.ERROR;
       state.error = action.payload || 'Не получилось добавить животное';
+    });
+    // Удаление животного
+    builder.addCase(deleteAnimal.pending, (state) => {
+      state.status = Status.LOADING;
+    });
+    builder.addCase(deleteAnimal.fulfilled, (state, action) => {
+      state.status = Status.SUCCESS;
+      const indexOfDeleted = state.list.findIndex((item) => item.id === action.payload.id);
+      state.list.splice(indexOfDeleted, 1);
+      message.success('Животное удалено');
+    });
+    builder.addCase(deleteAnimal.rejected, (state, action) => {
+      state.status = Status.ERROR;
+      state.error = action.payload || 'Не получилось удалить животное';
     });
   },
 });
