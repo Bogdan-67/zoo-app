@@ -3,15 +3,14 @@ import { Button, Modal, message } from 'antd';
 import CreateAnimalForm from '../Forms/CreateAnimalForm';
 
 const CreateAnimalModal: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const createAnimalFormRef = React.createRef<HTMLFormElement>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const createAnimalFormRef = React.createRef<HTMLFormElement>();
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
-    console.log('handleOk')
     if (createAnimalFormRef.current) {
       createAnimalFormRef.current.submitForm();
     }
@@ -23,6 +22,7 @@ const CreateAnimalModal: React.FC = () => {
 
   const handleSuccess = () => {
     setIsModalOpen(false);
+    message.success('Животное успешно создано');
   };
 
   const handleError = (error: string) => {
@@ -31,11 +31,20 @@ const CreateAnimalModal: React.FC = () => {
 
   return (
     <>
-      <Button onClick={showModal}>
-        Добавить животное
-      </Button>
-      <Modal title="Добавление животного" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} cancelText={'Отмена'} okText={'Сохранить'} >
-        <CreateAnimalForm ref={createAnimalFormRef} onError={handleError} onSuccess={handleSuccess} showOkBtn={false} />
+      <Button onClick={showModal}>Добавить животное</Button>
+      <Modal
+        title='Добавление животного'
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        cancelText={'Отмена'}
+        okText={'Сохранить'}>
+        <CreateAnimalForm
+          ref={createAnimalFormRef}
+          onError={handleError}
+          onSuccess={handleSuccess}
+          showOkBtn={false}
+        />
       </Modal>
     </>
   );

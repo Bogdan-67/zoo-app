@@ -4,6 +4,8 @@ import { Button, Checkbox, Flex, Input, message } from 'antd';
 import { IAnimal } from '../../models/IAnimal';
 import AnimalSchema from '../../models/validation/AnimalSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAppDispatch } from '../../hooks/redux';
+import { createAnimal } from '../../redux/slices/animalSlice';
 
 type Props = {
   title?: string;
@@ -27,6 +29,7 @@ const CreateAnimalForm = forwardRef(
       resolver: yupResolver(AnimalSchema),
     } as UseFormProps<IAnimal>);
     const [isSending, setIsSending] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
 
     const submitForm = () => {
       handleSubmit(submit)();
@@ -37,14 +40,19 @@ const CreateAnimalForm = forwardRef(
     }));
 
     const submit: SubmitHandler<IAnimal> = async (data) => {
-      console.log(data);
       reset();
       setIsSending(true);
-      if (onSuccess) {
-        onSuccess();
-      }
-      if (onError) {
-        onError('Error');
+
+      try {
+        await dispatch(createAnimal(data));
+
+        if (onSuccess) {
+          onSuccess();
+        }
+      } catch (error) {
+        if (onError) {
+          onError('Error');
+        }
       }
     };
 
@@ -55,7 +63,6 @@ const CreateAnimalForm = forwardRef(
           <Controller
             name='name'
             control={control}
-            defaultValue=''
             render={({ field }) => (
               <>
                 <Input
@@ -72,7 +79,7 @@ const CreateAnimalForm = forwardRef(
             control={control}
             render={({ field }) => (
               <>
-                <Checkbox value={field.value} onChange={field.onChange}>
+                <Checkbox checked={field.value} onChange={field.onChange}>
                   Хищник
                 </Checkbox>
                 {errors.predator && <div>{errors.predator.message}</div>}

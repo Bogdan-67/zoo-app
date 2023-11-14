@@ -18,6 +18,19 @@ export const fetchAnimals = createAsyncThunk<
   }
 });
 
+export const createAnimal = createAsyncThunk<
+  AxiosResponse<IAnimal>,
+  IAnimal,
+  { rejectValue: string }
+>('animals/getAnimal', async (params, { rejectWithValue }) => {
+  try {
+    const response = await AnimalService.createAnimal(params);
+    return response;
+  } catch (error) {
+    return rejectWithValue('Не получилось добавить животное');
+  }
+});
+
 interface AnimalState {
   list: IAnimal[];
   status: Status;
@@ -47,6 +60,18 @@ const animalSlice = createSlice({
     builder.addCase(fetchAnimals.rejected, (state, action) => {
       state.status = Status.ERROR;
       state.error = action.payload || 'Не получилось запросить список животных';
+    });
+    // Создание животного
+    builder.addCase(createAnimal.pending, (state, action) => {
+      state.status = Status.LOADING;
+    });
+    builder.addCase(createAnimal.fulfilled, (state, action) => {
+      state.status = Status.SUCCESS;
+      state.list.push({ ...action.payload.data, type: 'animal' });
+    });
+    builder.addCase(createAnimal.rejected, (state, action) => {
+      state.status = Status.ERROR;
+      state.error = action.payload || 'Не получилось добавить животное';
     });
   },
 });

@@ -3,8 +3,8 @@ import { AxiosResponse } from 'axios';
 import { IAnimal } from '../models/IAnimal';
 
 export default class AnimalService {
-  static async createAnimal(name: string, predator: boolean): Promise<AxiosResponse<IAnimal>> {
-    return $api.post<IAnimal>('/animals', { name, predator });
+  static async createAnimal(body: IAnimal): Promise<AxiosResponse<IAnimal>> {
+    return $api.post<IAnimal>('/animals', body);
   }
 
   static async getAnimals(): Promise<AxiosResponse<IAnimal[]>> {
