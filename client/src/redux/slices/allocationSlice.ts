@@ -31,7 +31,6 @@ export const saveAllocation = createAsyncThunk<
   try {
     const state = getState() as RootState;
     const areas = state.allocation.areas.filter((item) => item.first && item.second);
-    console.log(areas);
     const response = await AllocationSertvice.saveAllocation(areas);
     return response;
   } catch (error) {
@@ -57,7 +56,6 @@ const allocationSlice = createSlice({
   reducers: {
     setAreas(state, action: PayloadAction<number>) {
       const number = action.payload;
-      console.log('number', number);
       let diff = number - state.areas.length;
       if (diff > 0) {
         [...new Array(diff)].map((_, index) =>

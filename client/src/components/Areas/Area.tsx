@@ -22,7 +22,6 @@ const Area: FC<Props> = ({ area, nomer }) => {
   const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
     const target = e.relatedTarget as HTMLElement;
     if (!target || !e.currentTarget.contains(target)) {
-      console.log('dragend');
       setIsDragging(false);
     }
   };
