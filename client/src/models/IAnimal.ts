@@ -1,6 +1,6 @@
 export interface IAnimal {
   id: number;
   name: string;
-  predator: boolean;
-  readonly type: 'animal';
+  predator: boolean | null | undefined;
+  readonly type?: 'animal';
 }

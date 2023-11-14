@@ -7,13 +7,14 @@ import {
   generateAllocation,
   saveAllocation,
 } from '../redux/slices/allocationSlice';
+import CreateAnimalModal from './Modals/CreateAnimalModal';
 
 const Menu = () => {
   const status = useAppSelector(SelectAllocationStatus);
   const dispatch = useAppDispatch();
   return (
     <Flex vertical gap={10} className='mt20'>
-      <Button>Добавить животное</Button>
+      <CreateAnimalModal />
       <Button loading={status === Status.LOADING} onClick={() => dispatch(generateAllocation())}>
         Сгенерировать
       </Button>

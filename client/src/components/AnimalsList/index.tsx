@@ -24,6 +24,8 @@ const AnimalsList = (props: Props) => {
         <LoadingSpinner />
       ) : status === Status.ERROR ? (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={error} />
+      ) : animals.length === 0 ? (
+        <p>Нет ни одного животного. Создайте новых животных</p>
       ) : (
         <>
           {animals.map((animal) => (
