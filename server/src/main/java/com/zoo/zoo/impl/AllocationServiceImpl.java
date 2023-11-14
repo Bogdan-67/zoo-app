@@ -31,7 +31,6 @@ public class AllocationServiceImpl implements AllocationService {
         WaitingList waitList = new WaitingList();
         // Загружаем животных
         waitList.loadAnimals(animals);
-        List<Pair> pairs = pairService.findAllPairs();
         Allocation allocation = new Allocation();
 
         // Пока список ожидания не пуст
@@ -58,7 +57,7 @@ public class AllocationServiceImpl implements AllocationService {
                 }
             }
 
-            // Добавление тоже максимальных пар
+            // Добавление максимальных пар
             for (List<Object> pair : countPairs) {
                 // Если maxCount пуст до добавляем первый элемент
                 Animal first = (Animal) pair.get(1);
