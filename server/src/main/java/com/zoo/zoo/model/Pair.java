@@ -18,6 +18,4 @@ public class Pair {
     @NonNull
     @ManyToOne
     private Animal second;
-    @NonNull
-    private Integer count = 0;
 }

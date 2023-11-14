@@ -33,11 +33,8 @@ public class PairServiceImpl implements PairService {
         // Если не найдено, попробовать обратный порядок
         Optional<Pair> reversePair = pairRepository.findByFirstAndSecond(secondAnimal, firstAnimal);
 
-        if (reversePair.isPresent()) {
-            return reversePair.get();
-        }
+        return reversePair.orElse(null);
 
-        return null;
     }
 
     @Override
@@ -56,20 +53,5 @@ public class PairServiceImpl implements PairService {
         pairRepository.save(newPair);
 
         return newPair;
-    }
-
-    @Override
-    public void incrementPair(Pair pair) {
-        // Получить пару из БД
-        Optional<Pair> pairDb = pairRepository.findById(pair.getId());
-        pairDb.ifPresent(existingPair -> {
-            // Пара существует - увеличить счетчик
-            existingPair.setCount(existingPair.getCount() + 1);
-            pairRepository.save(existingPair);
-        });
-        pairDb.orElseGet(() -> {
-            System.out.println("Пара не найдена: " + pair);
-            return null;
-        });
     }
 }

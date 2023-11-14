@@ -133,14 +133,6 @@ public class AllocationServiceImpl implements AllocationService {
                 areaService.saveArea(area, allocation);
             }
 
-//        List<Pair> pairs = allocation.getAreas();
-//        for (Pair pair : pairs) {
-//            // Получить пару из БД
-//            Pair pairDb = pairService.findPairByAnimals(pair.getFirst(), pair.getSecond());
-//            // Увеличить счетчик для пары
-//            pairService.incrementPair(pairDb);
-//        }
-
         return null;
     }
 }
