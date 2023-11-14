@@ -1,6 +1,5 @@
 package com.zoo.zoo.repository;
 
-import com.zoo.zoo.dtos.PairCountDTO;
 import com.zoo.zoo.model.Animal;
 import com.zoo.zoo.model.Area;
 import org.springframework.data.jpa.repository.JpaRepository;

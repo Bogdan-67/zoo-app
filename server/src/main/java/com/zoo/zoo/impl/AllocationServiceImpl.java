@@ -1,9 +1,7 @@
 package com.zoo.zoo.impl;
 
-import com.zoo.zoo.dtos.PairCountDTO;
 import com.zoo.zoo.model.*;
 import com.zoo.zoo.repository.AllocationRepository;
-import com.zoo.zoo.repository.AreaRepository;
 import com.zoo.zoo.service.AllocationService;
 import com.zoo.zoo.service.AnimalService;
 import com.zoo.zoo.service.AreaService;

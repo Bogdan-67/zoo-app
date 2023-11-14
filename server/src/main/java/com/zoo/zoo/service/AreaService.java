@@ -1,6 +1,5 @@
 package com.zoo.zoo.service;
 
-import com.zoo.zoo.dtos.PairCountDTO;
 import com.zoo.zoo.model.Allocation;
 import com.zoo.zoo.model.Animal;
 import com.zoo.zoo.model.Area;
