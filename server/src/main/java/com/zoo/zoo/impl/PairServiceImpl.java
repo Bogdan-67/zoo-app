@@ -39,8 +39,7 @@ public class PairServiceImpl implements PairService {
 
     @Override
     public List<Pair> findAllPairs() {
-        Sort sort = Sort.by(Sort.Direction.DESC, "count");
-        return pairRepository.findAll(sort);
+        return pairRepository.findAll();
     }
 
     @Override
