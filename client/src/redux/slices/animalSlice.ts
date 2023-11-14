@@ -28,8 +28,10 @@ export const createAnimal = createAsyncThunk<
   try {
     const response = await AnimalService.createAnimal(params);
     return response;
-  } catch (error) {
-    return rejectWithValue('Не получилось добавить животное');
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response.data ? error.response.data : 'Не получилось добавить животное',
+    );
   }
 });
 
@@ -84,16 +86,14 @@ const animalSlice = createSlice({
       state.error = action.payload || 'Не получилось запросить список животных';
     });
     // Создание животного
-    builder.addCase(createAnimal.pending, (state, action) => {
-      state.status = Status.LOADING;
-    });
+    builder.addCase(createAnimal.pending, (state, action) => {});
     builder.addCase(createAnimal.fulfilled, (state, action) => {
       state.status = Status.SUCCESS;
       state.list.push({ ...action.payload.data, type: 'animal' });
     });
     builder.addCase(createAnimal.rejected, (state, action) => {
-      state.status = Status.ERROR;
-      state.error = action.payload || 'Не получилось добавить животное';
+      state.status = Status.SUCCESS;
+      console.warn(action.payload);
     });
     // Удаление животного
     builder.addCase(deleteAnimal.pending, (state) => {

@@ -40,19 +40,19 @@ const CreateAnimalForm = forwardRef(
     }));
 
     const submit: SubmitHandler<IAnimal> = async (data) => {
-      reset();
       setIsSending(true);
 
-      try {
-        await dispatch(createAnimal(data));
+      const result = await dispatch(createAnimal(data));
 
+      if (createAnimal.rejected.match(result)) {
+        if (onError) {
+          onError(result.payload ? result.payload : 'Ошибка');
+        }
+      } else if (createAnimal.fulfilled.match(result)) {
         if (onSuccess) {
           onSuccess();
         }
-      } catch (error) {
-        if (onError) {
-          onError('Error');
-        }
+        reset();
       }
     };
 

@@ -1,5 +1,6 @@
 package com.zoo.zoo.impl;
 
+import com.zoo.zoo.exceptions.BadRequest;
 import com.zoo.zoo.model.Animal;
 import com.zoo.zoo.repository.AnimalRepository;
 import com.zoo.zoo.service.AnimalService;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -25,9 +27,11 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public Animal saveAnimal(Animal animal) {
-//        try {
-        // TODO: Проверка на существование животного
             List<Animal> animals = this.findAllAnimals();
+            Animal finalAnimal = animal;
+            if (animals.stream().anyMatch(oldAnimal -> Objects.equals(finalAnimal.getName(), oldAnimal.getName()))) {
+                throw new BadRequest("Животное уже существует!");
+            }
             animal = repository.save(animal);
             for (Animal oldAnimal : animals) {
                 if (animal.getPredator() == oldAnimal.getPredator()) {
@@ -35,10 +39,6 @@ public class AnimalServiceImpl implements AnimalService {
                 }
             }
             return animal;
-//        } catch (Exception e) {
-//            System.out.println("Поймано исключение: " + e.getMessage());
-//            throw new Exception("Произошла ошибка при сохранении животного");
-//        }
     }
 
     @Override

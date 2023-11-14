@@ -1,7 +1,10 @@
 package com.zoo.zoo.controller;
 
+import com.zoo.zoo.exceptions.BadRequest;
 import com.zoo.zoo.model.Animal;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.zoo.zoo.service.AnimalService;
 
@@ -20,8 +23,15 @@ public class AnimalController {
     }
 
     @PostMapping
-    public Animal saveAnimal(@RequestBody Animal animal) {
-        return animalService.saveAnimal(animal);
+    public ResponseEntity<?> saveAnimal(@RequestBody Animal animal) {
+
+        try {
+            Animal newAnimal = animalService.saveAnimal(animal);
+            return ResponseEntity.status(HttpStatus.OK).body(newAnimal);
+        }
+        catch(BadRequest e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @DeleteMapping
