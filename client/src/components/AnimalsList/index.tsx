@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { SelectAnimals, deleteAnimal, fetchAnimals } from '../../redux/slices/animalSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Status } from '../../models/Status.enum';
@@ -9,18 +9,32 @@ import styles from './AnimalsList.module.scss';
 import classNames from 'classnames';
 import { IAnimal } from '../../models/IAnimal';
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { SelectAreas } from '../../redux/slices/allocationSlice';
 
 const { confirm } = Modal;
 
 type Props = {};
 
 const AnimalsList = (props: Props) => {
-  const { list: animals, status, error } = useAppSelector(SelectAnimals);
+  const { list, status, error } = useAppSelector(SelectAnimals);
+  const areas = useAppSelector(SelectAreas);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchAnimals());
   }, []);
+
+  const checkInArea = useCallback(
+    (animal: IAnimal) => {
+      return (
+        areas.find((area) => area.first?.id === animal.id || area.second?.id === animal.id) !==
+        undefined
+      );
+    },
+    [areas],
+  );
+
+  const animals = useMemo(() => list, [list]);
 
   const handleDelete = async (animal: IAnimal) => {
     confirm({
@@ -44,14 +58,18 @@ const AnimalsList = (props: Props) => {
         <p>Нет ни одного животного. Создайте новых животных</p>
       ) : (
         <>
-          {animals.map((animal) => (
-            <AnimalTile
-              key={animal.id}
-              animal={animal}
-              tip='Добавить в вольер'
-              deleteFunc={() => handleDelete(animal)}
-            />
-          ))}
+          {animals.map((animal) => {
+            const disabled = checkInArea(animal);
+            return (
+              <AnimalTile
+                key={animal.id}
+                animal={animal}
+                disabled={disabled}
+                tip={disabled ? 'Уже находится в вольере' : 'Перетащите в вольер'}
+                deleteFunc={() => handleDelete(animal)}
+              />
+            );
+          })}
         </>
       )}
     </div>

@@ -18,7 +18,7 @@
 
   &:hover {
     background: #f0f0f0;
-    cursor: pointer;
+    cursor: grab;
     transition: all 0.2s ease;
   }
 }
@@ -29,4 +29,13 @@
 
 .predator {
   color: red;
+}
+
+.disabled {
+  opacity: 0.5;
+
+  &:hover {
+    cursor: default;
+    background: inherit;
+  }
 }

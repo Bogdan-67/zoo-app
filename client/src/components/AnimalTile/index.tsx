@@ -11,10 +11,11 @@ import { clearDragItem, setDragItem } from '../../redux/slices/dragSlice';
 type Props = {
   animal: IAnimal;
   tip?: string;
+  disabled?: boolean;
   deleteFunc?: () => void;
 };
 
-const AnimalTile = ({ animal, tip = '', deleteFunc }: Props) => {
+const AnimalTile = ({ animal, disabled = false, tip = '', deleteFunc }: Props) => {
   const dispatch = useAppDispatch();
 
   const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -26,9 +27,9 @@ const AnimalTile = ({ animal, tip = '', deleteFunc }: Props) => {
   };
 
   return (
-    <div draggable={true} onDragStart={dragStartHandler} onDragEnd={dragEndHandler}>
+    <div draggable={!disabled} onDragStart={dragStartHandler} onDragEnd={dragEndHandler}>
       <Tooltip title={tip} placement='left'>
-        <div className={styles.tile}>
+        <div className={classNames(styles.tile, {[styles.disabled]: disabled})}>
           <Tooltip title={animal.predator ? 'Хищник' : 'Не хищник'}>
             <FaCircle
               className={classNames(styles.indicator, { [styles.predator]: animal.predator })}
