@@ -14,4 +14,6 @@ public interface AreaService {
     Area saveArea(Area area, Allocation allocation);
 
     Integer countAllPairsByAnimal(Animal animal);
+
+    void deleteAreasByAnimal(Animal animal);
 }

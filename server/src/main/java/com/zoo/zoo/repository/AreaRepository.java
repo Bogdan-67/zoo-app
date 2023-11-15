@@ -20,4 +20,6 @@ public interface AreaRepository extends JpaRepository<Area, Long> {
     @Query("SELECT COUNT(a) FROM Area a " +
             " WHERE (a.first = :animal OR a.second = :animal) AND a.pair IS NOT NULL")
     Integer countAllPairsByAnimal(@Param("animal") Animal animal);
+
+    void deleteByFirstOrSecond(Animal first, Animal second);
 }

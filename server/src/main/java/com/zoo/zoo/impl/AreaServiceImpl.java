@@ -42,4 +42,9 @@ public class AreaServiceImpl implements AreaService {
     public Integer countAllPairsByAnimal(Animal animal) {
         return areaRepository.countAllPairsByAnimal(animal);
     }
+
+    @Override
+    public void deleteAreasByAnimal(Animal animal) {
+        areaRepository.deleteByFirstOrSecond(animal, animal);
+    }
 }

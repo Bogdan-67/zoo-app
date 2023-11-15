@@ -4,6 +4,7 @@ import com.zoo.zoo.exceptions.BadRequest;
 import com.zoo.zoo.model.Animal;
 import com.zoo.zoo.repository.AnimalRepository;
 import com.zoo.zoo.service.AnimalService;
+import com.zoo.zoo.service.AreaService;
 import com.zoo.zoo.service.PairService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Objects;
 public class AnimalServiceImpl implements AnimalService {
     private final AnimalRepository repository;
     private final PairService pairService;
+    private final AreaService areaService;
 
     @Override
     public List<Animal> findAllAnimals() {
@@ -44,6 +46,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void deleteAnimal(Animal animal) {
+        areaService.deleteAreasByAnimal(animal);
         pairService.deletePairsByAnimal(animal);
         repository.delete(animal);
     }
