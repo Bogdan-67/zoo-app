@@ -60,7 +60,7 @@ public class AllocationServiceImpl implements AllocationService {
                 // Если maxCount пуст до добавляем первый элемент
                 Animal first = (Animal) pair.get(1);
                 Animal second = (Animal) pair.get(2);
-                // TODO: Сделать доп проверку на совместимость по хищнику
+                if (first.getPredator() != second.getPredator()) continue;
                 if (maxCount.isEmpty()) {
                     if (!first.equals(animal) && waitList.inList(first) || !second.equals(animal) && waitList.inList(second)) {
                         maxCount.add(pair);
@@ -76,12 +76,14 @@ public class AllocationServiceImpl implements AllocationService {
             }
 
             if (maxCount.isEmpty()) {
+                // Если пары не найдены
                 Pair solo = new Pair();
                 solo.setFirst(animal);
                 allocation.addPair(solo);
                 waitList.removeFromList(animal);
             }
             else if (maxCount.size() == 1) {
+                // Если подошла только одна пара
                 Animal first = (Animal) maxCount.get(0).get(1);
                 Animal second = (Animal) maxCount.get(0).get(2);
                 Pair pair = new Pair();
@@ -91,6 +93,7 @@ public class AllocationServiceImpl implements AllocationService {
                 waitList.removeFromList(first);
                 waitList.removeFromList(second);
             } else {
+                // Пар несколько
                 // Проходим по каждому партнеру для поиска количства пар
                 for (Map.Entry<Animal, Integer> entry : partners.entrySet()) {
                     Animal partner = entry.getKey();
