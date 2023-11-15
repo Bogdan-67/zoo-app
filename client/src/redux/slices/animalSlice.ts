@@ -43,12 +43,16 @@ export const deleteAnimal = createAsyncThunk<
   try {
     const state = getState() as RootState;
     await AnimalService.deleteAnimal(params);
-    const indexOfArea = state.allocation.areas.findIndex(
-      (area) => area.first?.id === params.id || area.second?.id === params.id,
-    );
-    const area = state.allocation.areas[indexOfArea];
-    const pos = area.first?.id === params.id ? 'first' : 'second';
-    dispatch(removeAnimalFromArea({ animal: pos, id: indexOfArea }));
+    if (state.allocation.areas.length !== 0) {
+      const indexOfArea = state.allocation.areas.findIndex(
+        (area) => area.first?.id === params.id || area.second?.id === params.id,
+      );
+      if (indexOfArea >= 0) {
+        const area = state.allocation.areas[indexOfArea];
+        const pos = area.first?.id === params.id ? 'first' : 'second';
+        dispatch(removeAnimalFromArea({ animal: pos, id: indexOfArea }));
+      }
+    }
     return params;
   } catch (error) {
     return rejectWithValue('Не получилось удалить животное');
