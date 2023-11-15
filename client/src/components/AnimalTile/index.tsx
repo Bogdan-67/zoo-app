@@ -19,7 +19,7 @@ const AnimalTile = ({ animal, disabled = false, tip = '', deleteFunc }: Props) =
   const dispatch = useAppDispatch();
 
   const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    dispatch(setDragItem(animal));
+    if (!disabled) dispatch(setDragItem(animal));
   };
 
   const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -29,7 +29,7 @@ const AnimalTile = ({ animal, disabled = false, tip = '', deleteFunc }: Props) =
   return (
     <div draggable={!disabled} onDragStart={dragStartHandler} onDragEnd={dragEndHandler}>
       <Tooltip title={tip} placement='left'>
-        <div className={classNames(styles.tile, {[styles.disabled]: disabled})}>
+        <div className={classNames(styles.tile, { [styles.disabled]: disabled })}>
           <Tooltip title={animal.predator ? 'Хищник' : 'Не хищник'}>
             <FaCircle
               className={classNames(styles.indicator, { [styles.predator]: animal.predator })}

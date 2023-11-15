@@ -36,9 +36,13 @@ const Area: FC<Props> = ({ area, nomer }) => {
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (dragItem?.type === 'animal') {
+    if (dragItem && dragItem?.type === 'animal') {
+      console.log(dragItem);
       if (area.first && area.second) setWarn('Вольер заполнен');
-      else if ((area.first || area.second)?.predator !== dragItem.predator)
+      else if (
+        (area.first || area.second) &&
+        (area.first || area.second)?.predator !== dragItem.predator
+      )
         setWarn(
           `${getPredator(dragItem.predator)} не может находиться вместе с ${getPredator(
             (area.first || area.second)?.predator || false,

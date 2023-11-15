@@ -38,6 +38,11 @@ const AnimalsList = (props: Props) => {
   const handleDelete = async (animal: IAnimal) => {
     confirm({
       title: 'Вы точно хотите удалить животное?',
+      content: (
+        <div>
+          <b>Внимание:</b> Данное действие будет невозможно отменить.
+        </div>
+      ),
       onOk() {
         return dispatch(deleteAnimal(animal));
       },
