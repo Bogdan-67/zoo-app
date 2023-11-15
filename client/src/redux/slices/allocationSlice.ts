@@ -99,6 +99,10 @@ const allocationSlice = createSlice({
         state.areas = state.areas.map((item) => (item.id === area!.id ? area! : item));
       }
     },
+
+    clearAreas(state) {
+      state.areas = initialState.areas;
+    },
   },
   extraReducers: (builder) => {
     // Генерация распределения
@@ -133,6 +137,7 @@ const allocationSlice = createSlice({
 export const SelectAreas = (state: RootState) => state.allocation.areas;
 export const SelectAreasNumber = (state: RootState) => state.allocation.areas.length;
 export const SelectAllocationStatus = (state: RootState) => state.allocation.status;
-export const { setAreas, addAnimalInArea, removeAnimalFromArea } = allocationSlice.actions;
+export const { setAreas, clearAreas, addAnimalInArea, removeAnimalFromArea } =
+  allocationSlice.actions;
 
 export default allocationSlice.reducer;
