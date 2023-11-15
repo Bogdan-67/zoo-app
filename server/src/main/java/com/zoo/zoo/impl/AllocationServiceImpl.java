@@ -60,14 +60,14 @@ public class AllocationServiceImpl implements AllocationService {
                 // Если maxCount пуст до добавляем первый элемент
                 Animal first = (Animal) pair.get(1);
                 Animal second = (Animal) pair.get(2);
-                if (first.getPredator() != second.getPredator()) continue;
+                if (!first.getPredator().equals(second.getPredator())) continue;
                 if (maxCount.isEmpty()) {
                     if (!first.equals(animal) && waitList.inList(first) || !second.equals(animal) && waitList.inList(second)) {
                         maxCount.add(pair);
                     }
                 }
                 // Сравниваем счетчик данной пары с первой в массиве
-                else if (pair.get(3).equals(maxCount.get(0).get(3)) && first.getPredator().equals(second.getPredator())) {
+                else if (pair.get(3).equals(maxCount.get(0).get(3))) {
                     // Если первое или второе животное не равно ищущему и находится в списке ожидания
                     if (!first.equals(animal) && waitList.inList(first) || !second.equals(animal) && waitList.inList(second)) {
                         maxCount.add(pair);
