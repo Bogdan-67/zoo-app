@@ -8,7 +8,6 @@ import AnimalTile from '../AnimalTile';
 import styles from './AnimalsList.module.scss';
 import classNames from 'classnames';
 import { IAnimal } from '../../models/IAnimal';
-import { ExclamationCircleFilled } from '@ant-design/icons';
 import { SelectAreas } from '../../redux/slices/allocationSlice';
 
 const { confirm } = Modal;

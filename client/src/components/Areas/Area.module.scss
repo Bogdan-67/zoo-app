@@ -3,3 +3,10 @@
   max-height: 190px;
   min-width: 100%;
 }
+
+.warn {
+  &__icon {
+    margin-right: 3px;
+    color: rgb(255, 83, 83);
+  }
+}
