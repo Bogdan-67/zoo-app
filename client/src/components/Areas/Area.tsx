@@ -37,7 +37,6 @@ const Area: FC<Props> = ({ area, nomer }) => {
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (dragItem && dragItem?.type === 'animal') {
-      console.log(dragItem);
       if (area.first && area.second) setWarn('Вольер заполнен');
       else if (
         (area.first || area.second) &&

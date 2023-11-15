@@ -79,10 +79,15 @@ const allocationSlice = createSlice({
     addAnimalInArea(state, action: PayloadAction<{ animal: IAnimal; id: number }>) {
       const animal = action.payload.animal;
       let area = state.areas.find((item) => item.id === action.payload.id);
-      const notAnimalInAllocation = !state.areas.find(
+      const oldArea = state.areas.find(
         (item) => item.first?.id === animal.id || item.second?.id === animal.id,
       );
-      if (area !== undefined && !(area.first && area.second) && notAnimalInAllocation) {
+      if (area !== undefined && !(area.first && area.second)) {
+        console.log(oldArea)
+        if (oldArea) {
+          const pos = oldArea.first?.id === animal.id ? "first" : "second"
+          allocationSlice.caseReducers.removeAnimalFromArea(state, { payload: { animal: pos, id: oldArea.id }, type: 'REMOVE_ANIMAL_FROM_AREA' })
+        }
         if (area.first === null) {
           area.first = animal;
         } else if (area.second === null) {
